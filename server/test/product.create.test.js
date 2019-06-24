@@ -82,4 +82,27 @@ describe('POST /product', function() {
                 chai.expect(body).to.throw(/is required/i)
             })
     })
+
+    it('failed to create a product token required', async function() {
+        return req
+            .post('/product')
+            .field('price', 32000)
+            .attach('image', __dirname + 'assets/test.jpg')
+            .expect(400)
+            .then(res => {
+                let body = res.body
+                chai.expect(body).to.throw(/token required/i)
+            })
+    })
+
+    it('failed to create a product token wrong', async function() {
+        return req
+            .post('/product')
+            .set('token', 'token salah')
+            .expect(400)
+            .then(res => {
+                let body = res.body
+                chai.expect(body).to.throw(/invalid token/i)
+            })
+    })
 })
