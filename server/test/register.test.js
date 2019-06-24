@@ -8,7 +8,7 @@ describe('POST /user/register', function () {
         return req
             .post('/user/register')
             .send({ fullName: 'new user', email: 'newuser@test.com', password: 'test' })
-            .expect(200)
+            .expect(201)
             .expect('Content-Type', /json/)
             .then(res => {
                 let body = res.body
