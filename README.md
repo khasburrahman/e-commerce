@@ -10,12 +10,21 @@
 
 ::API `POST` harus menggunakan `Content-Type` header dengan nilai `application/json`::
 
+## user
+
 Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validation
 -- | -- | -- | -- | -- | -- | --
-`/user/register` | POST | - | {email, password} | {_id, email, password} | register a user | email must be valid
+`/user/register` | POST | - | {email, fullName, password} | {_id, email, fullName, password} | register a user | email must be valid, name is more than 1 char
 `/user/login` | POST | - | {email, password} | {access_token} | login: get token | -
-`/article` | POST | token | {textData, quillData, dueDate, name, htmlData} | {textData, quillData, dueDate, name _id} | create a new article | -
-`/article` | GET | - | - | [{ name, textData, quillData, dueDate, status, htmlData, _id }] | get list of article | -
-`/article/:id` | GET | - | - | { name, textData, quillData, dueDate, status } | get single article | -
-`/article/:id` | DELETE | token | - | - | delete a article | -
-`/article/:id` | PATCH | token | { textData, quillData, name, dueDate, status, htmlData} | { name, textData, quillData, dueDate, status } | update article | -
+
+## cart
+
+Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validation
+-- | -- | -- | -- | -- | -- | --
+`/cart` | POST | token | {product, qty} | {_id} | add to cart | -
+
+## product
+Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validation
+-- | -- | -- | -- | -- | -- | --
+`/product` | POST | token | {name, price, image, description} | {name, price, image, description, _id} | create a new product | -
+`/product/:id` | DELTETE | token |  | {_id} | delete a product | -
