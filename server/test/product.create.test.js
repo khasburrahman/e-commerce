@@ -4,9 +4,12 @@ const app = require('../app')
 const req = supertest(app)
 
 describe('POST /product', function() {
+    let token
+
     it('successfully create a product', async function() {
         return req
             .post('/product')
+            .set('token', token)
             .field('name', 'barang test')
             .field('price', 32000)
             .field('description', 'yooo ini deskripsi')
@@ -25,6 +28,7 @@ describe('POST /product', function() {
     it('failed to create a product image required', async function() {
         return req
             .post('/product')
+            .set('token', token)
             .field('name', 'barang test')
             .field('price', 32000)
             .field('description', 'yooo ini deskripsi')
@@ -40,6 +44,7 @@ describe('POST /product', function() {
     it('failed to create a product name required', async function() {
         return req
             .post('/product')
+            .set('token', token)
             .field('price', 32000)
             .field('description', 'yooo ini deskripsi')
             .attach('image', __dirname + 'assets/test.jpg')
@@ -53,6 +58,7 @@ describe('POST /product', function() {
     it('failed to create a product price required', async function() {
         return req
             .post('/product')
+            .set('token', token)
             .field('name', 'barang test')
             .field('description', 'yooo ini deskripsi')
             .attach('image', __dirname + 'assets/test.jpg')
@@ -66,6 +72,7 @@ describe('POST /product', function() {
     it('failed to create a product description required', async function() {
         return req
             .post('/product')
+            .set('token', token)
             .field('name', 'barang test')
             .field('price', 32000)
             .attach('image', __dirname + 'assets/test.jpg')
