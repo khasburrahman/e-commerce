@@ -3,7 +3,7 @@ const chai = require('chai')
 const app = require('../app')
 const req = supertest(app)
 
-describe('/user/login', function() {
+describe('POST /user/login', function() {
     it('successful login attempt', async function () {
         return req
             .post('/user/login')
@@ -20,6 +20,17 @@ describe('/user/login', function() {
         return req
             .post('/user/login')
             .send({email: 'testsalah@test.com', password: 'test'})
+            .expect(400)
+            .then(res => {
+                let body = res.body
+                chai.expect(body).to.throw(/username \/password invalid/i)
+            })
+    })
+
+    it('failed login attempt with wrong password', async function () {
+        return req
+            .post('/user/login')
+            .send({ email: 'test@test.com', password: 'testsalah' })
             .expect(400)
             .then(res => {
                 let body = res.body
