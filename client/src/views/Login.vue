@@ -1,5 +1,8 @@
 <template>
   <div>
+    <b-alert v-model="showError" variant="danger" dismissible show>
+      Error: {{loginError}}
+    </b-alert>
     <h2 class="m-5">Login</h2>
     <div class="m-5 d-flex flex-row justify-content-center">
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
@@ -43,13 +46,23 @@
           email: '',
           password: '',
         },
+        showError: false,
+        loginError: '',
         show: true
       }
     },
     methods: {
-      onSubmit(evt) {
+      async onSubmit(evt) {
         evt.preventDefault()
-        alert(JSON.stringify(this.form))
+        let res = await this.$store.dispatch('login', {
+          email: this.form.email,
+          password: this.form.password
+        })
+        if (res.isAxiosError) {
+          this.showError = true
+          this.loginError = res.message
+          alert(res.message)
+        }
       },
       onReset(evt) {
         evt.preventDefault()
