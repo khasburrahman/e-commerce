@@ -30,6 +30,7 @@ class Controller {
       if (stock) product.stock = stock
       if (description) product.description = description
       if (req.file && req.file.gcsUrl) product.image = req.file && req.file.gcsUrl
+      await product.save()
       res.json({ 
         _id: id,
         name: product.name,
@@ -40,7 +41,7 @@ class Controller {
       })
     } catch (err) {
       console.log('error updating', err)
-      next(err)
+      next({code: 400, msg: err.message})
     }
   }
 

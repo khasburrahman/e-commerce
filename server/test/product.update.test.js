@@ -6,6 +6,7 @@ let app, req, gcsBucketMiddleware
 
 describe('PATCH /product', function () {
   let token
+  let userToken
   let products
 
   before(async function () {
@@ -19,10 +20,11 @@ describe('PATCH /product', function () {
     app = require('../app')
     req = supertest(app)
     token = await testDbHelper.getToken('admin@test.com')
+    userToken = await testDbHelper.getToken('test@test.com')
     products = await testDbHelper.initProduct()
   })
 
-  it.only('successfully update a product', async function () {
+  it('successfully update a product', async function () {
     return req
       .patch(`/product/${products[0]}`)
       .set('token', token)
@@ -39,78 +41,43 @@ describe('PATCH /product', function () {
       })
   })
 
+  it('update with invalid stock number', async function () {
+    return req
+      .patch(`/product/${products[0]}`)
+      .set('token', token)
+      .field('name', 'barang update')
+      .field('stock', -1)
+      .expect(400)
+      .then(res => {
+        let body = res.text
+        chai.expect(body).to.match(/is less than minimum/i)
+      })
+  })
+
+  it('update with invalid price', async function () {
+    return req
+      .patch(`/product/${products[0]}`)
+      .set('token', token)
+      .field('name', 'barang update')
+      .field('price', -1)
+      .expect(400)
+      .then(res => {
+        let body = res.text
+        chai.expect(body).to.match(/is less than minimum/i)
+      })
+  })
+
   it('not authorized to update', async function () {
     return req
-      .post('/product')
-      .set('token', token)
+      .patch(`/product/${products[0]}`)
+      .set('token', userToken)
       .field('name', 'barang test')
       .field('price', 32000)
       .field('description', 'yooo ini deskripsi')
-      .expect(400)
+      .expect(401)
       .then(res => {
         let err = res.text
-        chai.expect(err).to.match(/is required/i)
-      })
-  })
-
-  it('failed to create a product name required', async function () {
-    return req
-      .post('/product')
-      .set('token', token)
-      .field('price', 32000)
-      .field('description', 'yooo ini deskripsi')
-      .expect(400)
-      .then(res => {
-        let err = res.text
-        chai.expect(err).to.match(/is required/i)
-      })
-  })
-
-  it('failed to create a product price required', async function () {
-    return req
-      .post('/product')
-      .set('token', token)
-      .field('name', 'barang test')
-      .field('description', 'yooo ini deskripsi')
-      .expect(400)
-      .then(res => {
-        let err = res.text
-        chai.expect(err).to.match(/is required/i)
-      })
-  })
-
-  it('failed to create a product description required', async function () {
-    return req
-      .post('/product')
-      .set('token', token)
-      .field('name', 'barang test')
-      .field('price', 32000)
-      .expect(400)
-      .then(res => {
-        let err = res.text
-        chai.expect(err).to.match(/is required/i)
-      })
-  })
-
-  it('failed to create a product token required', async function () {
-    return req
-      .post('/product')
-      .field('price', 32000)
-      .expect(400)
-      .then(res => {
-        let err = res.text
-        chai.expect(err).to.match(/token is required/i)
-      })
-  })
-
-  it('failed to create a product token wrong', async function () {
-    return req
-      .post('/product')
-      .set('token', 'token salah')
-      .expect(400)
-      .then(res => {
-        let err = res.text
-        chai.expect(err).to.match(/token is invalid/i)
+        chai.expect(err).to.match(/not authorized/i)
       })
   })
 })
