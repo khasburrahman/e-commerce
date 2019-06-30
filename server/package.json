@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "createAdmin": "cross-env node commands/create.admin.user.js",
     "test": "cross-env NODE_ENV=test npx mocha --exit",
     "start": "node app.js",
     "dev": "cross-env NODE_ENV=development nodemon app.js"

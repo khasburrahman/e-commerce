@@ -4,6 +4,7 @@
 
 ### Cara main
 - buat file `.env` dari template `.envTemplate`
+- buat user admin dengan `npm run createAdmin` user: admin@admin.com, pass: admin
 - jalankan dev server, masuk ke folder server `npm run dev`
 
 ### API Route
