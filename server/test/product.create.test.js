@@ -1,13 +1,22 @@
 const supertest = require('supertest')
 const chai = require('chai')
-const app = require('../app')
-const req = supertest(app)
+const sinon = require('sinon')
 const testDbHelper = require('./helper/test.db.helper')
+let app, req, gcsBucketMiddleware
 
 describe('POST /product', function () {
   let token 
 
   before(async function () {
+    gcsBucketMiddleware = require('../middleware/gcs.bucket.middleware')
+    sinon.stub(gcsBucketMiddleware, 'gcsMiddleware')
+      .callsFake(function (req, res, next) {
+        req.file = {}
+        req.file.gcsUrl = 'fakefile.jpg'
+        return next()
+      })
+    app = require('../app')
+    req = supertest(app)
     try {
       token = await testDbHelper.getToken('test@test.com')
     } catch (err) {
@@ -15,7 +24,7 @@ describe('POST /product', function () {
     }
   })
 
-  it.only('successfully create a product', async function () {
+  it('successfully create a product', async function () {
     this.timeout(99999)
     return req
       .post('/product')
@@ -46,12 +55,10 @@ describe('POST /product', function () {
       .field('description', 'yooo ini deskripsi')
       .expect(400)
       .then(res => {
-        let body = res.body
-        chai.expect(body).to.throw(/is required/i)
+        let err = res.text
+        chai.expect(err).to.match(/is required/i)
       })
   })
-
-
 
   it('failed to create a product name required', async function () {
     return req
@@ -59,11 +66,10 @@ describe('POST /product', function () {
       .set('token', token)
       .field('price', 32000)
       .field('description', 'yooo ini deskripsi')
-      .attach('image', __dirname + 'assets/test.jpg')
       .expect(400)
       .then(res => {
-        let body = res.body
-        chai.expect(body).to.throw(/is required/i)
+        let err = res.text
+        chai.expect(err).to.match(/is required/i)
       })
   })
 
@@ -73,11 +79,10 @@ describe('POST /product', function () {
       .set('token', token)
       .field('name', 'barang test')
       .field('description', 'yooo ini deskripsi')
-      .attach('image', __dirname + 'assets/test.jpg')
       .expect(400)
       .then(res => {
-        let body = res.body
-        chai.expect(body).to.throw(/is required/i)
+        let err = res.text
+        chai.expect(err).to.match(/is required/i)
       })
   })
 
@@ -87,11 +92,10 @@ describe('POST /product', function () {
       .set('token', token)
       .field('name', 'barang test')
       .field('price', 32000)
-      .attach('image', __dirname + 'assets/test.jpg')
       .expect(400)
       .then(res => {
-        let body = res.body
-        chai.expect(body).to.throw(/is required/i)
+        let err = res.text
+        chai.expect(err).to.match(/is required/i)
       })
   })
 
@@ -99,11 +103,10 @@ describe('POST /product', function () {
     return req
       .post('/product')
       .field('price', 32000)
-      .attach('image', __dirname + 'assets/test.jpg')
       .expect(400)
       .then(res => {
-        let body = res.body
-        chai.expect(body).to.throw(/token required/i)
+        let err = res.text
+        chai.expect(err).to.match(/token is required/i)
       })
   })
 
@@ -113,8 +116,8 @@ describe('POST /product', function () {
       .set('token', 'token salah')
       .expect(400)
       .then(res => {
-        let body = res.body
-        chai.expect(body).to.throw(/invalid token/i)
+        let err = res.text
+        chai.expect(err).to.match(/token is invalid/i)
       })
   })
 })

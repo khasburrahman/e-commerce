@@ -3,7 +3,7 @@ const chai = require('chai')
 const app = require('../app')
 const req = supertest(app)
 
-describe('POST /product', function () {
+describe('DELETE /product', function () {
     let token
     let productId
 
