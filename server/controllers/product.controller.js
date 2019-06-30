@@ -51,7 +51,11 @@ class Controller {
     let id = req.params.id
     try {
       let product = await Product.deleteOne({ _id: id }).exec()
-      res.json(product)
+      if (product.n === 0) {
+        res.status(404).json('not found')
+      } else {
+        res.json(product)
+      }
     } catch (err) {
       console.log(err)
       next(err)

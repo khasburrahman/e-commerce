@@ -1,4 +1,5 @@
 const User = require('../../models/user')
+const Product = require('../../models/product')
 const jwt = require('../../helpers/jwt.helper')
 
 function initUser () {
@@ -9,9 +10,11 @@ function initUser () {
   })
 }
 
-function removeUser () {
+function cleanData () {
   if (process.env.NODE_ENV === 'test') {
-    return User.deleteMany({}).exec()
+    let user = User.deleteMany({}).exec()
+    let product = Product.deleteMany({}).exec()
+    return Promise.all([user, product])
   }
 }
 
@@ -26,6 +29,6 @@ async function getToken (email) {
 
 module.exports = {
   initUser,
-  removeUser,
+  cleanData,
   getToken
 }

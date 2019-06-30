@@ -17,11 +17,7 @@ describe('POST /product', function () {
       })
     app = require('../app')
     req = supertest(app)
-    try {
-      token = await testDbHelper.getToken('test@test.com')
-    } catch (err) {
-      throw new Error(err)
-    }
+    token = await testDbHelper.getToken('test@test.com')
   })
 
   it('successfully create a product', async function () {
