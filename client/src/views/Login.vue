@@ -1,8 +1,5 @@
 <template>
   <div>
-    <b-alert v-model="showError" variant="danger" dismissible show>
-      Error: {{loginError}}
-    </b-alert>
     <h2 class="m-5">Login</h2>
     <div class="m-5 d-flex flex-row justify-content-center">
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
@@ -39,7 +36,10 @@
 </template>
 
 <script>
+  const Toastify = require('toastify-js')
+  
   export default {
+    props: ['registerSuccess'],
     data() {
       return {
         form: {
@@ -47,6 +47,7 @@
           password: '',
         },
         showError: false,
+        showRegister: false,
         loginError: '',
         show: true
       }
@@ -59,9 +60,24 @@
           password: this.form.password
         })
         if (res.isAxiosError) {
-          this.showError = true
-          this.loginError = res.message
-          alert(res.message)
+          Toastify({
+            text: "Login Failed",
+            duration: 3000,
+            close: true,
+            gravity: "top", 
+            position: 'left', 
+            stopOnFocus: true 
+          }).showToast();
+        } else {
+          Toastify({
+            text: "Login Success",
+            duration: 3000,
+            close: true,
+            gravity: "top", 
+            position: 'left', 
+            stopOnFocus: true 
+          }).showToast();
+          this.$router.push({ path: '/' })
         }
       },
       onReset(evt) {
