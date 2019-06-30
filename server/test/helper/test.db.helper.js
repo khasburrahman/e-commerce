@@ -27,8 +27,16 @@ async function getToken (email) {
   }
 }
 
+async function initProduct () {
+  let product = await Product.create({ name: 'test', price: 2000, image: 'test.jgp', stock: 3, description: 'test ' })
+  let product2 = await Product.create({ name: 'test', price: 2000, image: 'test.jgp', stock: 3, description: 'test ' })
+  productId = [product._id, product2._id]
+  return productId
+}
+
 module.exports = {
   initUser,
   cleanData,
-  getToken
+  getToken,
+  initProduct
 }

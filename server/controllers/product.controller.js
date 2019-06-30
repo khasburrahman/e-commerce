@@ -40,7 +40,7 @@ class Controller {
   static async get (req, res, next) {
     try {
       let products = await Product.find().exec()
-      req.json(products)
+      res.json(products)
     } catch (err) {
       console.log(`get product error`, err)
       next(err)

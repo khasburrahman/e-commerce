@@ -11,9 +11,7 @@ describe('DELETE /product', function () {
 
   before(async function () {
     token = await testHelper.getToken('test@test.com')
-    let product = await Product.create({ name:'test', price:2000, image:'test.jgp', stock:3, description:'test ' })
-    let product2 = await Product.create({ name:'test', price:2000, image:'test.jgp', stock:3, description:'test ' })
-    productId = [product._id, product2._id]
+    productId = await testHelper.initProduct()
   })
 
   it('successfully remove a product', async function () {
