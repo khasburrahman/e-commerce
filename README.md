@@ -21,7 +21,9 @@ Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validat
 
 Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validation
 -- | -- | -- | -- | -- | -- | --
-`/cart` | POST | token | {product, qty} | {_id} | add to cart | -
+`/cart` | POST | token | {product, qty} | {_id, product, qty, user} | add to cart | -
+`/cart/:id` | PATCH | token | {qty} | {_id, product, qty, user} | update qty | -
+`/cart/:id` | DELETE | token | | {_id, product, qty, user} | delete cart | -
 
 ## product
 Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validation

@@ -1,5 +1,6 @@
 const User = require('../../models/user')
 const Product = require('../../models/product')
+const Cart = require('../../models/cart')
 const jwt = require('../../helpers/jwt.helper')
 
 function initUser () {
@@ -34,8 +35,15 @@ async function initProduct () {
   return productId
 }
 
+async function initCart (product, qty) {
+  let user = await User.findOne({email: 'test@test.com'}).exec()
+  let cart = await Cart.create({ user: user._id, product, qty: 1 })
+  return [cart._id]
+}
+
 module.exports = {
   initUser,
+  initCart,
   cleanData,
   getToken,
   initProduct

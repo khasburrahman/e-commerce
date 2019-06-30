@@ -28,7 +28,7 @@ ModelSchema.pre('save', async function (next) {
     next('stock product tidak cukup')
   }
   await product.save()
-});
+})
 
 const Model = mongoose.model('Carts', ModelSchema)
 module.exports = Model
