@@ -25,7 +25,7 @@ class Controller {
         try {
             let user = await User.create({ email, password, fullName })
             let { _id } = user
-            res.json({ _id, email, password, fullName })
+            res.status(201).json({ _id, email, password: user.password, fullName })
         } catch (err) {
             console.log('register error', err)
             if (err.code === 11000) {

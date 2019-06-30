@@ -4,17 +4,6 @@ const testDbHelper = require('./helper/test.db.helper')
 const app = require('../app')
 const req = supertest(app)
 
-before(function () {
-  return testDbHelper.removeUser()
-    .then(() => {
-      return testDbHelper.initUser()
-    })
-})
-
-after(function () {
-  return testDbHelper.removeUser()
-})
-
 describe('POST /user/login', function() {
     it('successful login attempt', async function () {
         return req

@@ -2,16 +2,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-console.log({env: process.env.NODE_ENV})
-
 const express = require('express')
 const app = express() 
 const userRoute = require('./routes/user.routes')
