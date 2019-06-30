@@ -26,5 +26,7 @@ Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validat
 ## product
 Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validation
 -- | -- | -- | -- | -- | -- | --
-`/product` | POST | token | {name, price, image, description} | {name, price, image, description, _id} | create a new product | -
+`/product` | GET | token | - | [{_id, name, price, image, stock, description }] | get products | -
+`/product` | POST | token | {name, price, image, stock, description} | {name, price, image, stock, description, _id} | create a new product | -
+`/product` | PATCH | token | {name, price, image, stock, description} | {name, price, image, stock, description, _id} | update a new product | -
 `/product/:id` | DELTETE | token |  | {_id} | delete a product | -
