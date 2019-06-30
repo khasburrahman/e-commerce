@@ -22,6 +22,10 @@ const ModelSchema = Schema({
         type: String,
         required: true,
         minlength: 1,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true
     }
 })
 

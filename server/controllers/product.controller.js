@@ -29,10 +29,17 @@ class Controller {
       if (price) product.price = price
       if (stock) product.stock = stock
       if (description) product.description = description
-      if (image) product.image = image
-      res.json({ _id, name, image, price, stock, description })
+      if (req.file && req.file.gcsUrl) product.image = req.file && req.file.gcsUrl
+      res.json({ 
+        _id: id,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        stock: product.stock,
+        description: product.description
+      })
     } catch (err) {
-      console.log('error create', err)
+      console.log('error updating', err)
       next(err)
     }
   }

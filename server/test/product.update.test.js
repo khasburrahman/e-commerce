@@ -4,8 +4,9 @@ const sinon = require('sinon')
 const testDbHelper = require('./helper/test.db.helper')
 let app, req, gcsBucketMiddleware
 
-describe('POST /product', function () {
-  let token 
+describe('PATCH /product', function () {
+  let token
+  let products
 
   before(async function () {
     gcsBucketMiddleware = require('../middleware/gcs.bucket.middleware')
@@ -18,31 +19,27 @@ describe('POST /product', function () {
     app = require('../app')
     req = supertest(app)
     token = await testDbHelper.getToken('admin@test.com')
+    products = await testDbHelper.initProduct()
   })
 
-  it('successfully create a product', async function () {
-    this.timeout(99999)
+  it.only('successfully update a product', async function () {
     return req
-      .post('/product')
+      .patch(`/product/${products[0]}`)
       .set('token', token)
-      .field('name', 'barang test')
-      .field('price', 32000)
-      .field('stock', 5)
-      .field('description', 'yooo ini deskripsi')
-      .attach('image', __dirname + '/assets/test.jpg')
-      .expect(201)
+      .field('name', 'barang update')
+      .field('stock', 10)
+      .expect(200)
       .then(res => {
         let body = res.body
         chai.expect(body).to.have.property('image')
-        chai.expect(body).to.have.property('price', '32000')
-        chai.expect(body).to.have.property('stock', '5')
-        chai.expect(body).to.have.property('name', 'barang test')
-        chai.expect(body).to.have.property('description', 'yooo ini deskripsi')
+        chai.expect(body).to.have.property('stock', 10)
+        chai.expect(body).to.have.property('name', 'barang update')
+        chai.expect(body).to.have.property('description', 'test')
         chai.expect(body.image).not.empty
       })
   })
 
-  it('failed to create a product image required', async function () {
+  it('not authorized to update', async function () {
     return req
       .post('/product')
       .set('token', token)

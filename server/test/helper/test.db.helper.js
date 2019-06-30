@@ -3,12 +3,18 @@ const Product = require('../../models/product')
 const Cart = require('../../models/cart')
 const jwt = require('../../helpers/jwt.helper')
 
-function initUser () {
-  return User.create({ 
+async function initUser () {
+  return await User.insertMany([{ 
     email: 'test@test.com',
     password: 'test',
-    fullName: 'test user'
-  })
+    fullName: 'test user',
+    isAdmin: false,
+  }, {
+    email: 'admin@test.com',
+    password: 'test',
+    fullName: 'admin test user',
+    isAdmin: true
+  }])
 }
 
 function cleanData () {
@@ -29,8 +35,8 @@ async function getToken (email) {
 }
 
 async function initProduct () {
-  let product = await Product.create({ name: 'test', price: 2000, image: 'test.jgp', stock: 3, description: 'test ' })
-  let product2 = await Product.create({ name: 'test', price: 2000, image: 'test.jgp', stock: 3, description: 'test ' })
+  let product = await Product.create({ name: 'test', price: 2000, image: 'test.jgp', stock: 3, description: 'test' })
+  let product2 = await Product.create({ name: 'test', price: 2000, image: 'test.jgp', stock: 3, description: 'test' })
   productId = [product._id, product2._id]
   return productId
 }

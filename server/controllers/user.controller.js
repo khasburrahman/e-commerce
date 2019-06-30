@@ -23,7 +23,7 @@ class Controller {
     static async register(req, res, next) {
         let { email, password, fullName } = req.body
         try {
-            let user = await User.create({ email, password, fullName })
+            let user = await User.create({ email, password, fullName, isAdmin: false })
             let { _id } = user
             res.status(201).json({ _id, email, password: user.password, fullName })
         } catch (err) {
