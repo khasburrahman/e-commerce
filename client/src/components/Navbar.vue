@@ -19,12 +19,12 @@
             </b-nav-item-dropdown>
           </div>
           <div v-else>
-            <b-button variant="light">
-              <router-link to="/login">Login</router-link>
-            </b-button>
-            <b-button variant="light" class="m-2">
-              <router-link to="/register">Register</router-link>
-            </b-button>
+            <router-link to="/login">
+              <b-button variant="light">Login</b-button>
+            </router-link>
+            <router-link to="/register">
+              <b-button variant="light" class="m-2">Register</b-button>
+            </router-link>
           </div>
         </b-navbar-nav>
       </b-collapse>
