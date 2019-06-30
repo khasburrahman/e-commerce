@@ -4,17 +4,18 @@ const Cart = require('../../models/cart')
 const jwt = require('../../helpers/jwt.helper')
 
 async function initUser () {
-  return await User.insertMany([{ 
+  await User.create({ 
     email: 'test@test.com',
     password: 'test',
     fullName: 'test user',
     isAdmin: false,
-  }, {
+  })
+  await User.create({
     email: 'admin@test.com',
     password: 'test',
     fullName: 'admin test user',
     isAdmin: true
-  }])
+  })
 }
 
 function cleanData () {

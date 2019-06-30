@@ -12,7 +12,12 @@ getPublicUrl = (bucketName, fileName) => `https://storage.googleapis.com/${bucke
 module.exports = {
   gcsMiddleware: function (req, res, next) {
     if (!req.file) {
-      return next();
+      return next()
+    }
+
+    if (process.env.NODE_ENV === 'test') {
+      req.file = { gcsUrl: 'test.jpg' }
+      return next()
     }
 
     const storage = new Storage({ keyFilename: process.env.G_BUCKET_KEY_FILE_NAME });

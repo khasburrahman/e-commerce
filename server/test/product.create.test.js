@@ -20,6 +20,10 @@ describe('POST /product', function () {
     token = await testDbHelper.getToken('admin@test.com')
   })
 
+  after(function () {
+    gcsBucketMiddleware.gcsMiddleware.restore()
+  })
+
   it('successfully create a product', async function () {
     this.timeout(99999)
     return req

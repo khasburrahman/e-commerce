@@ -10,7 +10,7 @@ describe('DELETE /product', function () {
   let productId
 
   before(async function () {
-    token = await testHelper.getToken('test@test.com')
+    token = await testHelper.getToken('admin@test.com')
     productId = await testHelper.initProduct()
   })
 

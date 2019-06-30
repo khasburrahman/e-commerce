@@ -24,6 +24,10 @@ describe('PATCH /product', function () {
     products = await testDbHelper.initProduct()
   })
 
+  after(function () {
+    gcsBucketMiddleware.gcsMiddleware.restore()
+  })
+
   it('successfully update a product', async function () {
     return req
       .patch(`/product/${products[0]}`)
