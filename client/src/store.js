@@ -9,7 +9,10 @@ const jsonwebtoken = require('jsonwebtoken')
 export default new Vuex.Store({
   state: {
     loggedUser: {
-      fullName: ''
+      fullName: '',
+      email: '',
+      user: '',
+      isAdmin: false
     }
   },
   mutations: {
@@ -18,6 +21,12 @@ export default new Vuex.Store({
     },
     INIT_APP (state, payload) {
       state.loggedUser = payload
+    },
+    LOGOUT (state) {
+      state.loggedUser.fullName = ''
+      state.loggedUser.email = ''
+      state.loggedUser.user = ''
+      state.loggedUser.isAdmin = false
     }
   },
   actions: {

@@ -15,7 +15,7 @@
                 <strong>{{ $store.state.loggedUser.fullName }}</strong>
               </template>
                 <b-dropdown-item href="#">Profile</b-dropdown-item>
-                <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+                <b-dropdown-item @click="signOut" href="#">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </div>
           <div v-else>
@@ -35,6 +35,13 @@
 <script>
 export default {
   name: "navbar",
-  props: []
+  props: [],
+  methods: {
+    signOut () {
+      localStorage.clear()
+      this.$store.commit('LOGOUT')
+      this.$router.push({path: '/login'})
+    }
+  }
 };
 </script>
