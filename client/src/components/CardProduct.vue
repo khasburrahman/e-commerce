@@ -1,0 +1,48 @@
+<template>
+  <b-card
+    :title="name"
+    :img-src="image"
+    img-alt="Image"
+    img-top
+    tag="article"
+    style="max-width: 20rem;"
+    class="mb-2"
+  >
+    <b-card-text>{{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(price) }}</b-card-text>
+    <b-card-text>{{ description }}</b-card-text>
+
+    <div v-if="$store.state.loggedUser.isAdmin">
+      <router-link :to="{ name: 'product-edit', params: {id: this.id }}">
+        <b-button href="#" variant="primary">Edit</b-button>
+      </router-link>
+      <router-link :to="{ name: 'product-delete', params: {id: this.id }}">
+        <b-button href="#" variant="primary">Delete</b-button>
+      </router-link>
+    </div>
+    <div v-else>
+      <router-link @click="addToCheckout">
+        <b-button href="#" variant="primary">Add to Cart</b-button>
+      </router-link>
+    </div>
+  </b-card>
+</template>
+
+<script>
+import Toastify from "toastify-js";
+export default {
+  props: ["description", "price", "image", "name", "_id"],
+  methods: {
+    addToCheckout() {
+      Toastify({
+        text: "Added to Cart",
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "left",
+        stopOnFocus: true
+      }).showToast();
+      $emit("add-to-cart", this._id);
+    }
+  }
+};
+</script>
