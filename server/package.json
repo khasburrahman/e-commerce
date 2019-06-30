@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx mocha --exit"
+    "test": "cross-env NODE_ENV=test npx mocha --exit",
+    "start": "node app.js",
+    "dev": "cross-env NODE_ENV=development nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +20,17 @@
   },
   "homepage": "https://github.com/eager-fox-2019/e-commerce#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "chai": "^4.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mocha": "^6.1.4",
+    "mongoose": "^5.6.1",
+    "mongoose-unique-validator": "^2.0.3",
     "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.0.0"
   }
 }
