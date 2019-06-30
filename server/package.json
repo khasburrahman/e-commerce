@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/eager-fox-2019/e-commerce#readme",
   "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
     "bcryptjs": "^2.4.3",
     "chai": "^4.2.0",
     "express": "^4.17.1",
@@ -27,6 +28,7 @@
     "mocha": "^6.1.4",
     "mongoose": "^5.6.1",
     "mongoose-unique-validator": "^2.0.3",
+    "multer": "^1.4.1",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
