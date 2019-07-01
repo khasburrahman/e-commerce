@@ -20,9 +20,7 @@
       </router-link>
     </div>
     <div v-else>
-      <router-link @click="addToCheckout">
-        <b-button variant="primary">Add to Cart</b-button>
-      </router-link>
+      <b-button @click="addToCheckout" variant="primary">Add to Cart</b-button>
     </div>
   </b-card>
 </template>
@@ -41,7 +39,7 @@ export default {
         position: "left",
         stopOnFocus: true
       }).showToast();
-      $emit("add-to-cart", this._id);
+      this.$store.commit("ADD_PRODUCT_TO_CHECKOUT", this._id);
     }
   }
 };
