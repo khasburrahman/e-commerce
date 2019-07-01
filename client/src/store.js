@@ -7,11 +7,12 @@ const BASE_URL = process.env.VUE_APP_BASE_URL
 const axios = require('axios')
 const jsonwebtoken = require('jsonwebtoken')
 
-function axiosConfig() {
+function axiosConfig({multiPart}) {
   return {
     headers: {
-      token: localStorage.getItem('token')
-    }
+      token: localStorage.getItem('token'),
+    },
+    'Content-Type': (multiPart) ? 'multipart/form-data' : 'application/json'
   }
 }
 
@@ -101,6 +102,14 @@ export default new Vuex.Store({
       try {
         let res = await axios.get(`${BASE_URL}/product`)
         context('FETCH_PRODUCTS', res.data)
+        return {}
+      } catch (err) {
+        return err
+      }
+    },
+    async postProduct(context, payload) {
+      try {
+        await axios.post(`${BASE_URL}/product`, payload, axiosConfig({multiPart: true}))
         return {}
       } catch (err) {
         return err
