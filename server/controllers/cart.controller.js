@@ -2,6 +2,26 @@ const Cart = require('../models/cart')
 const Product = require('../models/product')
 
 class Controller {
+  static async list (req, res, next) {
+    let user = req.user
+    try {
+      let cart = await Cart.find({user})
+      res.json(cart)
+    } catch (err) {
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      console.log('error list cart', err)
+      next({code: 400, msg: err.message})
+    }
+  }
+
   static async create (req, res, next) {
     let user = req.user
     let { product, qty } = req.body
