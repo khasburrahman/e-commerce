@@ -88,6 +88,15 @@ export default new Vuex.Store({
         return err
       }
     },
+    async register (context, payload) {
+      let { email, password, fullName } = payload
+      try {
+        await axios.post(`${BASE_URL}/user/register`, { email, password, fullName })
+        return {}
+      } catch (err) {
+        return err
+      }
+    },
     async fetchProduct(context) {
       try {
         let res = await axios.get(`${BASE_URL}/product`)

@@ -31,6 +31,16 @@
           ></b-form-input>
         </b-form-group>
 
+        <b-form-group id="input-group-3" label="Your Full Name:" label-for="input-3">
+          <b-form-input
+            id="input-3"
+            type="text"
+            v-model="form.fullName"
+            required
+            placeholder="Full Name"
+          ></b-form-input>
+        </b-form-group>
+
         <b-button type="submit" variant="primary">Submit</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
@@ -47,6 +57,7 @@
         form: {
           email: '',
           password: '',
+          fullName: '',
         },
         showError: false,
         loginError: '',
@@ -56,14 +67,31 @@
     methods: {
       async onSubmit(evt) {
         evt.preventDefault()
-        let res = await this.$store.dispatch('login', {
+        let res = await this.$store.dispatch('register', {
           email: this.form.email,
-          password: this.form.password
+          password: this.form.password,
+          fullName: this.form.fullName
         })
         if (res.isAxiosError) {
-          this.showError = true
-          this.loginError = res.message
-          alert(res.message)
+          console.log(res)
+          Toastify({
+            text: "Register Failed",
+            duration: 3000,
+            close: true,
+            gravity: "top", 
+            position: 'left', 
+            stopOnFocus: true 
+          }).showToast();
+        } else {
+          Toastify({
+            text: "Register Success",
+            duration: 3000,
+            close: true,
+            gravity: "top", 
+            position: 'left', 
+            stopOnFocus: true 
+          }).showToast();
+          this.$router.push({ path: '/login' })
         }
       },
       onReset(evt) {
