@@ -5,15 +5,21 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <!-- Right aligned nav items -->
+
         <b-navbar-nav class="ml-auto">
+          <div v-if="$store.state.loggedUser.isAdmin" class="mr-3">
+            <router-link to="/product">
+              <b-button variant="light">Add Product</b-button>
+            </router-link>
+          </div>
           <div v-if="$store.state.loggedUser.fullName !== ''">
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template slot="button-content">
                 <strong>{{ $store.state.loggedUser.fullName }}</strong>
               </template>
-                <b-dropdown-item href="#">Profile</b-dropdown-item>
-                <b-dropdown-item @click="signOut" href="#">Sign Out</b-dropdown-item>
+              <b-dropdown-item href="#">Profile</b-dropdown-item>
+              <b-dropdown-item @click="signOut" href="#">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </div>
           <div v-else>
@@ -35,10 +41,10 @@ export default {
   name: "navbar",
   props: [],
   methods: {
-    signOut () {
-      localStorage.clear()
-      this.$store.commit('LOGOUT')
-      this.$router.push({path: '/login'})
+    signOut() {
+      localStorage.clear();
+      this.$store.commit("LOGOUT");
+      this.$router.push({ path: "/login" });
     }
   }
 };

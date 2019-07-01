@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Toastify from 'toastify-js'
+import store from './store'
 
 function notAuthorized() {
   Toastify({
@@ -15,7 +16,7 @@ function notAuthorized() {
 }
 
 const adminRoute = (to, from, next) => {
-  if (this.$store.state.loggedUser.isAdmin) {
+  if (store.state.loggedUser.isAdmin) {
     next()
   } else {
     notAuthorized()
@@ -24,7 +25,7 @@ const adminRoute = (to, from, next) => {
 }
 
 const customerRoute = (to, from, next) => {
-  if (this.$store.state.loggedUser.isAdmin === false) {
+  if (store.state.loggedUser.isAdmin === false) {
     next()
   } else {
     notAuthorized()
