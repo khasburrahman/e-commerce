@@ -12,16 +12,16 @@
     <b-card-text>{{ description }}</b-card-text>
 
     <div v-if="$store.state.loggedUser.isAdmin">
-      <router-link :to="{ name: 'product-edit', params: {id: this.id }}">
-        <b-button href="#" variant="primary">Edit</b-button>
+      <router-link :to="{ name: 'product-edit', params: {id: this._id }}">
+        <b-button variant="primary">Edit</b-button>
       </router-link>
-      <router-link :to="{ name: 'product-delete', params: {id: this.id }}">
-        <b-button href="#" variant="primary">Delete</b-button>
+      <router-link :to="{ name: 'product-delete', params: {id: this._id }}">
+        <b-button variant="primary">Delete</b-button>
       </router-link>
     </div>
     <div v-else>
       <router-link @click="addToCheckout">
-        <b-button href="#" variant="primary">Add to Cart</b-button>
+        <b-button variant="primary">Add to Cart</b-button>
       </router-link>
     </div>
   </b-card>
