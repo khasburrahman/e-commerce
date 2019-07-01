@@ -6,7 +6,7 @@
     img-top
     tag="article"
     style="max-width: 20rem;"
-    class="mb-2"
+    class="m-4"
   >
     <b-card-text>{{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(price) }}</b-card-text>
     <b-card-text>{{ description }}</b-card-text>

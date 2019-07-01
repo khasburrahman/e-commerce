@@ -101,7 +101,7 @@ export default new Vuex.Store({
     async fetchProduct(context) {
       try {
         let res = await axios.get(`${BASE_URL}/product`)
-        context('FETCH_PRODUCTS', res.data)
+        context.commit('FETCH_PRODUCTS', res.data)
         return {}
       } catch (err) {
         return err
