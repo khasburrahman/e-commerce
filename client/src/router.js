@@ -16,6 +16,7 @@ function notAuthorized() {
 }
 
 const adminRoute = (to, from, next) => {
+  store.dispatch('initApp')
   if (store.state.loggedUser.isAdmin) {
     next()
   } else {
@@ -25,6 +26,7 @@ const adminRoute = (to, from, next) => {
 }
 
 const customerRoute = (to, from, next) => {
+  store.dispatch('initApp')
   if (store.state.loggedUser.isAdmin === false) {
     next()
   } else {
