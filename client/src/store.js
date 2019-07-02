@@ -132,7 +132,7 @@ export default new Vuex.Store({
     },
     async postProduct(context, payload) {
       try {
-        let res = axios.post(`${BASE_URL}/product`, payload, axiosConfig({multiPart: true}))
+        let res = await axios.post(`${BASE_URL}/product`, payload, axiosConfig({multiPart: true}))
         toastifyHelper('Data berhasil ditambahkan')
         return res
       } catch (err) {

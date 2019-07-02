@@ -90,6 +90,8 @@
         let success = await this.$store.dispatch('postProduct', formData)
         if (success) {
           this.$router.push({ path: '/' })
+        } else {
+          this.submitted = false
         }
       },
     }
