@@ -112,7 +112,9 @@ export default new Vuex.Store({
     async register (context, payload) {
       let { email, password, fullName } = payload
       try {
-        return await axios.post(`${BASE_URL}/user/register`, { email, password, fullName })
+        let res = await axios.post(`${BASE_URL}/user/register`, { email, password, fullName })
+        toastifyHelper('Register Succesful!')
+        return res
       } catch (err) {
         errorHandler(err)
         return err
@@ -130,7 +132,9 @@ export default new Vuex.Store({
     },
     async postProduct(context, payload) {
       try {
-        return axios.post(`${BASE_URL}/product`, payload, axiosConfig({multiPart: true}))
+        let res = axios.post(`${BASE_URL}/product`, payload, axiosConfig({multiPart: true}))
+        toastifyHelper('Data berhasil ditambahkan')
+        return res
       } catch (err) {
         errorHandler(err)
         return false
@@ -139,7 +143,9 @@ export default new Vuex.Store({
     async deleteProduct(context, payload) {
       try {
         context.commit('DELETE_LOCAL_PRODUCT', payload)
-        return await axios.delete(`${BASE_URL}/product/${payload.id}`, axiosConfig())
+        let res = await axios.delete(`${BASE_URL}/product/${payload.id}`, axiosConfig())
+        toastifyHelper('Data berhasil dihapus')
+        return res
       } catch (err) {
         errorHandler(err)
         return false
