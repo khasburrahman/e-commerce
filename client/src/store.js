@@ -2,12 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { stat } from 'fs';
 
+const errorHandler = require('./helpers/errorHandler')
+const toastifyHelper = require('./helpers/toastify')
+
 Vue.use(Vuex)
 const BASE_URL = process.env.VUE_APP_BASE_URL
 const axios = require('axios')
 const jsonwebtoken = require('jsonwebtoken')
 
-function axiosConfig({multiPart}) {
+function axiosConfig({multiPart} = {}) {
   return {
     headers: {
       token: localStorage.getItem('token'),
@@ -48,6 +51,7 @@ export default new Vuex.Store({
       state.loggedUser = payload
     },
     LOGOUT(state) {
+      toastifyHelper('Logged Out!')
       state.loggedUser.fullName = ''
       state.loggedUser.email = ''
       state.loggedUser.user = ''
@@ -58,6 +62,12 @@ export default new Vuex.Store({
     },
     FETCH_CARD(state, payload) {
       state.carts = payload
+    },
+    DELETE_LOCAL_PRODUCT(state, payload) {
+      let idx = state.products.findIndex(product => product._id === payload.id)
+      if (idx !== -1) {
+        state.products.splice(idx, 1)
+      }
     }
   },
   actions: {
@@ -71,6 +81,9 @@ export default new Vuex.Store({
         }
         let { email, fullName, isAdmin, user } = decodedPayload
         context.commit('INIT_APP', { email, fullName, isAdmin, user })
+        return true
+      } else {
+        return false
       }
     },
     async login(context, payload) {
@@ -83,18 +96,25 @@ export default new Vuex.Store({
           let decodedPayload = jsonwebtoken.decode(token)
           let { email, fullName, isAdmin, user } = decodedPayload
           context.commit('SET_LOGIN', { email, fullName, isAdmin, user })
-          return {}
+          toastifyHelper('Login Success!')
+          return res
+        } else {
+          toastifyHelper('Login Failed! <No Token Provided>')
+          console.error('No token provided from the API', res)
+          return false
         }
       } catch (err) {
+        toastifyHelper('Login Failed!')
+        errorHandler(err)
         return err
       }
     },
     async register (context, payload) {
       let { email, password, fullName } = payload
       try {
-        await axios.post(`${BASE_URL}/user/register`, { email, password, fullName })
-        return {}
+        return await axios.post(`${BASE_URL}/user/register`, { email, password, fullName })
       } catch (err) {
+        errorHandler(err)
         return err
       }
     },
@@ -102,26 +122,37 @@ export default new Vuex.Store({
       try {
         let res = await axios.get(`${BASE_URL}/product`)
         context.commit('FETCH_PRODUCTS', res.data)
-        return {}
+        return res
       } catch (err) {
-        return err
+        errorHandler(err)
+        return false
       }
     },
     async postProduct(context, payload) {
       try {
-        await axios.post(`${BASE_URL}/product`, payload, axiosConfig({multiPart: true}))
-        return {}
+        return axios.post(`${BASE_URL}/product`, payload, axiosConfig({multiPart: true}))
       } catch (err) {
-        return err
+        errorHandler(err)
+        return false
+      }
+    },
+    async deleteProduct(context, payload) {
+      try {
+        context.commit('DELETE_LOCAL_PRODUCT', payload)
+        return await axios.delete(`${BASE_URL}/product/${payload.id}`, axiosConfig())
+      } catch (err) {
+        errorHandler(err)
+        return false
       }
     },
     async fetchCart(context) {
       try {
         let res = await axios.get(`${BASE_URL}/cart`, axiosConfig())
         context('FETCH_CART', res.data)
-        return {}
+        return res
       } catch (err) {
-        return err
+        errorHandler(err)
+        return false
       }
     }
   }

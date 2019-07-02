@@ -27,7 +27,7 @@
             type="number"
             v-model="form.price"
             required
-            placeholder="Name"
+            placeholder="Price"
           ></b-form-input>
         </b-form-group>
         <b-form-group label="Stock:" label-for="input-4">
@@ -49,15 +49,14 @@
           />
         </b-form-group>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="primary" class="mr-2"><b-spinner v-if="submitted" small label="Loading..."></b-spinner> Submit</b-button>
+        <b-button @click="$router.push({path:'/'})" variant="danger" > Cancel</b-button>
       </b-form>
     </div>
   </div>
 </template>
 
 <script>
-  const Toastify = require('toastify-js')
-  
   export default {
     props: ['registerSuccess'],
     data() {
@@ -67,8 +66,9 @@
           stock: '',
           description: '',
           price: '',
-          image: ''
+          image: '',
         },
+        submitted: false,
       }
     },
     methods: {
@@ -79,6 +79,7 @@
       },
       async onSubmit(evt) {
         evt.preventDefault()
+        this.submitted = true
         let formData = new FormData()
         formData.append('name', this.form.name),
         formData.append('price', this.form.price)
@@ -86,25 +87,8 @@
         formData.append('stock', this.form.stock)
         formData.append('description', this.form.description)
 
-        let res = await this.$store.dispatch('postProduct', formData)
-        if (res.isAxiosError) {
-          Toastify({
-            text: "Error: "+res.data,
-            duration: 3000,
-            close: true,
-            gravity: "top", 
-            position: 'left', 
-            stopOnFocus: true 
-          }).showToast();
-        } else {
-          Toastify({
-            text: "berhasil tambah produk",
-            duration: 3000,
-            close: true,
-            gravity: "top", 
-            position: 'left', 
-            stopOnFocus: true 
-          }).showToast();
+        let success = await this.$store.dispatch('postProduct', formData)
+        if (success) {
           this.$router.push({ path: '/' })
         }
       },

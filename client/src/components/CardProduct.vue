@@ -15,9 +15,7 @@
       <router-link :to="{ name: 'product-edit', params: {id: this._id }}">
         <b-button variant="primary">Edit</b-button>
       </router-link>
-      <router-link :to="{ name: 'product-delete', params: {id: this._id }}">
-        <b-button variant="primary">Delete</b-button>
-      </router-link>
+      <b-button @click="triggerDelete" variant="primary">Delete</b-button>
     </div>
     <div v-else>
       <b-button @click="addToCheckout" variant="primary">Add to Cart</b-button>
@@ -26,20 +24,33 @@
 </template>
 
 <script>
-import Toastify from "toastify-js";
+const toastifyHelper = require('../helpers/toastify')
+
 export default {
   props: ["description", "price", "image", "name", "_id"],
   methods: {
     addToCheckout() {
-      Toastify({
-        text: "Added to Cart",
-        duration: 3000,
-        close: true,
-        gravity: "top",
-        position: "left",
-        stopOnFocus: true
-      }).showToast();
+      toastifyHelper("Added to cart")
       this.$store.commit("ADD_PRODUCT_TO_CHECKOUT", this._id);
+    },
+    triggerDelete() {
+      this.$modal.show("dialog", {
+        title: "Are you sure?",
+        text: `Delete product <b>${this.name}</b>?`,
+        buttons: [
+          {
+            title: "Yes",
+            handler: async () => {
+              this.$modal.hide('dialog')
+              await this.$store.dispatch('deleteProduct', {id: this._id})
+              await this.$store.dispatch('fetchProduct')
+            }
+          },
+          {
+            title: "No"
+          }
+        ]
+      });
     }
   }
 };

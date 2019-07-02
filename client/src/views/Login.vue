@@ -36,8 +36,6 @@
 </template>
 
 <script>
-  const Toastify = require('toastify-js')
-  
   export default {
     props: ['registerSuccess'],
     data() {
@@ -59,25 +57,8 @@
           email: this.form.email,
           password: this.form.password
         })
-        if (res.isAxiosError) {
-          Toastify({
-            text: "Login Failed",
-            duration: 3000,
-            close: true,
-            gravity: "top", 
-            position: 'left', 
-            stopOnFocus: true 
-          }).showToast();
-        } else {
-          Toastify({
-            text: "Login Success",
-            duration: 3000,
-            close: true,
-            gravity: "top", 
-            position: 'left', 
-            stopOnFocus: true 
-          }).showToast();
-          this.$router.push({ path: '/' })
+        if (res) {
+          this.$router.push({path: '/'})
         }
       },
       onReset(evt) {

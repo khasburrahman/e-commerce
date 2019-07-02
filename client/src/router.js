@@ -1,18 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Toastify from 'toastify-js'
 import store from './store'
+const toastifyHelper = require('./helpers/toastify')
 
 function notAuthorized() {
-  Toastify({
-    text: "Not Authorized",
-    duration: 3000,
-    close: true,
-    gravity: "top",
-    position: 'left',
-    stopOnFocus: true
-  }).showToast();
+  toastifyHelper('Not Authorized')
 }
 
 const adminRoute = (to, from, next) => {
@@ -66,12 +59,6 @@ export default new Router({
       path: '/product/:id',
       name: 'product-edit',
       component: () => import(/* webpackChunkName: "productEdit" */ './views/Product.Edit.vue'),
-      beforeEnter: adminRoute
-    },
-    {
-      path: '/delete/product/:id',
-      name: 'product-delete',
-      component: () => import(/* webpackChunkName: "productDelete" */ './views/Product.Delete.vue'),
       beforeEnter: adminRoute
     },
     {
