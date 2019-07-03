@@ -72,24 +72,7 @@
           password: this.form.password,
           fullName: this.form.fullName
         })
-        if (res.isAxiosError) {
-          Toastify({
-            text: "Register Failed",
-            duration: 3000,
-            close: true,
-            gravity: "top", 
-            position: 'left', 
-            stopOnFocus: true 
-          }).showToast();
-        } else {
-          Toastify({
-            text: "Register Success",
-            duration: 3000,
-            close: true,
-            gravity: "top", 
-            position: 'left', 
-            stopOnFocus: true 
-          }).showToast();
+        if (res) {
           this.$router.push({ path: '/login' })
         }
       },
