@@ -6,5 +6,6 @@ const cartAuthorization = require('../middleware/cart.authorization.middleware')
 router.get('/', authMiddleware, cartController.list)
 router.post('/', authMiddleware, cartController.create)
 router.patch('/:id', authMiddleware, cartAuthorization, cartController.updateQty)
+router.delete('/:id', authMiddleware, cartAuthorization, cartController.delete)
 
 module.exports = router

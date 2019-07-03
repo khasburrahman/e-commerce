@@ -43,6 +43,25 @@ class Controller {
       next({code:400, msg: err.message})
     }
   }
+
+  static async delete (req, res, next) {
+    let { id } = req.params
+    try {
+      let cart = await Cart.findOne({ _id: id }).exec()
+      let product = await Product.findOne({ _id: cart.product }).exec()
+      if (cart) {
+        product.stock += cart.qty
+        await product.save()
+        await cart.remove()
+        res.json({_id: id})
+      } else {
+        next({code: 404, msg: 'not found'})
+      }
+    } catch (err) {
+      console.log('delete cart error', err)
+      next(err)
+    }
+  }
 }
 
 module.exports = Controller

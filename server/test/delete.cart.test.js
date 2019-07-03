@@ -29,8 +29,7 @@ describe('DELETE /cart', function () {
   })
 
   it('should readd the stock to product', async function () {
-    let cart = await Cart.findOne({_id: carts[0]}).exec()
-    let product = await Product.findOne({_id: cart.product}).exec()
+    let product = await Product.findOne({_id: products[0]}).exec()
     chai.expect(product.stock).to.eq(3)
   })
 
@@ -38,17 +37,17 @@ describe('DELETE /cart', function () {
     return req 
       .delete(`/cart/${products[0]}`)
       .set('token', token)
-      .expect(404)
+      .expect(401)
       .then(res => {
         let err = res.text
-        chai.expect(err).to.match(/not found/i)
+        chai.expect(err).to.match(/not authorized/i)
       })
   })
 
   it('faled to delete a cart invalid token', async function () {
     return req 
       .delete(`/cart/${carts[0]}`)
-      .set('token', token)
+      .set('token', 'dsadsa32')
       .expect(400)
       .then(res => {
         let err = res.text
