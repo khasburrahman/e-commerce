@@ -8,16 +8,6 @@ class Controller {
       let cart = await Cart.find({user})
       res.json(cart)
     } catch (err) {
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
-      console.log('error list cart', err)
       next({code: 400, msg: err.message})
     }
   }
