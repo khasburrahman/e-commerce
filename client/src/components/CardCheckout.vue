@@ -54,14 +54,15 @@ export default {
     triggerDelete() {
       this.$modal.show("dialog", {
         title: "Are you sure?",
-        text: `Delete product <b>${this.name}</b>?`,
+        text: `Delete cart <b>${this.product.name}</b>?`,
         buttons: [
           {
             title: "Yes",
             handler: async () => {
               this.$modal.hide('dialog')
-              // await this.$store.dispatch('deleteProduct', {id: this._id})
-              // await this.$store.dispatch('fetchProduct')
+              await this.$store.dispatch('deleteCart', {id: this.id})
+              await this.$store.dispatch('fetchProduct')
+              await this.$store.dispatch('fetchCart')
             }
           },
           {

@@ -203,7 +203,7 @@ export default new Vuex.Store({
     async deleteCart (context, payload) {
       let { id } = payload
       try {
-        let res = await axios.delete(`${BASE_URL}/cart`, axiosConfig())
+        let res = await axios.delete(`${BASE_URL}/cart/${id}`, axiosConfig())
         toastifyHelper('cart deleted')
         return res
       } catch (err) {
