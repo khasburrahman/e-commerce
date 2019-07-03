@@ -14,13 +14,17 @@
               <b-button variant="light">Add Product</b-button>
             </router-link>
           </div>
+          <div v-else-if="$store.state.loggedUser.user !== ''" class="mr-3">
+            <router-link to="/cart">
+              <b-button variant="light">Cart</b-button>
+            </router-link>
+          </div>
           <div v-if="$store.state.loggedUser.fullName !== ''">
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template slot="button-content">
                 <strong>{{ $store.state.loggedUser.fullName }}</strong>
               </template>
-              <b-dropdown-item href="#">Profile</b-dropdown-item>
               <b-dropdown-item @click="signOut" href="#">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </div>

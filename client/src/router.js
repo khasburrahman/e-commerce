@@ -62,9 +62,9 @@ export default new Router({
       beforeEnter: adminRoute
     },
     {
-      path: '/checkout',
-      name: 'checkout',
-      component: () => import(/* webpackChunkName: "checkout" */ './views/Checkout.vue'),
+      path: '/cart',
+      name: 'cart',
+      component: () => import(/* webpackChunkName: "checkout" */ './views/Cart.vue'),
       beforeEnter: customerRoute
     }
   ]
