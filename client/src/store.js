@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { stat } from 'fs';
 
 const errorHandler = require('./helpers/errorHandler')
 const toastifyHelper = require('./helpers/toastify')
@@ -33,10 +32,8 @@ export default new Vuex.Store({
     checkoutList: [],
   },
   mutations: {
-    ADD_PRODUCT_TO_CHECKOUT(state, payload) {
-      if (!state.checkoutList.includes(payload)) {
-        state.checkoutList.push(payload)
-      }
+    ADD_PRODUCT_CART_LOCALY(state, payload) {
+      state.carts.push(payload)
     },
     REMOVE_PRODUCT_TO_CHECKOUT(state, payload) {
       let index = state.checkoutList.indexOf(payload)
@@ -60,7 +57,7 @@ export default new Vuex.Store({
     FETCH_PRODUCTS(state, payload) {
       state.products = payload
     },
-    FETCH_CARD(state, payload) {
+    FETCH_CART(state, payload) {
       state.carts = payload
     },
     DELETE_LOCAL_PRODUCT(state, payload) {
@@ -164,7 +161,28 @@ export default new Vuex.Store({
     async fetchCart(context) {
       try {
         let res = await axios.get(`${BASE_URL}/cart`, axiosConfig())
-        context('FETCH_CART', res.data)
+        context.commit('FETCH_CART', res.data)
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    },
+    async addToCart (context, payload) {
+      let { carts } = context.state
+      let { _id, qty = 1 } = payload
+      
+      if (carts.findIndex(cart => cart.product === _id) !== -1) {
+        return errorHandler({ msg: 'Produk sudah masuk ke cart', userError: true })
+      } 
+      context.commit('ADD_PRODUCT_CART_LOCALY', {
+        product: _id,
+        qty
+      })
+
+      try {
+        let res = await axios.post(`${BASE_URL}/cart`, { product: _id, qty }, axiosConfig())
+        toastifyHelper('Added to cart!')
         return res
       } catch (err) {
         errorHandler(err)

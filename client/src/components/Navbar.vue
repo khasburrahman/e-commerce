@@ -16,7 +16,7 @@
           </div>
           <div v-else-if="$store.state.loggedUser.user !== ''" class="mr-3">
             <router-link to="/cart">
-              <b-button variant="light">Cart</b-button>
+              <b-button variant="light">Cart ({{ carts.length }})</b-button>
             </router-link>
           </div>
           <div v-if="$store.state.loggedUser.fullName !== ''">
@@ -43,8 +43,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: "navbar",
+  computed: mapState(['carts']),
   props: [],
   methods: {
     signOut() {

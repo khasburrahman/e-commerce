@@ -73,7 +73,6 @@
           fullName: this.form.fullName
         })
         if (res.isAxiosError) {
-          console.log(res)
           Toastify({
             text: "Register Failed",
             duration: 3000,

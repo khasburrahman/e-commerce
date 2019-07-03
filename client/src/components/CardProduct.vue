@@ -10,7 +10,8 @@
   >
     <b-card-text>
       {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(price) }}<br/>
-      {{ `Stock: ${stock}` }}
+      {{ `Stock: ${stock}` }}<br v-if="carts.some(e => e.product === _id)" />
+      {{ (carts.some(e => e.product === _id)) ? 'In Cart' : 'xxxxxxxxxxxx' }}
     </b-card-text>
     <b-card-text>{{ description }}</b-card-text>
 
@@ -21,20 +22,27 @@
       <b-button @click="triggerDelete" variant="primary">Delete</b-button>
     </div>
     <div v-else>
-      <b-button :disabled="stock < 1" @click="addToCheckout" variant="primary">Add to Cart</b-button>
+      <b-button :disabled="stock < 1 || carts.some(e => e.product === _id)" @click="addToCheckout" variant="primary">Add to Cart</b-button>
     </div>
   </b-card>
 </template>
 
 <script>
 const toastifyHelper = require('../helpers/toastify')
-
+import { mapState } from 'vuex'
 export default {
+
   props: ["description", "price", "image", "name", "stock", "_id"],
+  computed: {
+    ...mapState(['carts']),
+  },
   methods: {
-    addToCheckout() {
-      toastifyHelper("Added to cart")
-      this.$store.commit("ADD_PRODUCT_TO_CHECKOUT", this._id);
+    async addToCheckout() {
+      let status = await this.$store.dispatch("addToCart", {
+        _id: this._id,
+      });
+      this.$store.dispatch("fetchCart")
+      this.$store.dispatch("fetchProduct")
     },
     triggerDelete() {
       this.$modal.show("dialog", {
