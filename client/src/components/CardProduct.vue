@@ -8,17 +8,20 @@
     style="max-width: 20rem;"
     class="m-4"
   >
-    <b-card-text>{{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(price) }}</b-card-text>
+    <b-card-text>
+      {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(price) }}<br/>
+      {{ `Stock: ${stock}` }}
+    </b-card-text>
     <b-card-text>{{ description }}</b-card-text>
 
     <div v-if="$store.state.loggedUser.isAdmin">
       <router-link :to="{ name: 'product-edit', params: {id: this._id }}">
-        <b-button variant="primary">Edit</b-button>
+        <b-button class="mr-1" variant="primary">Edit</b-button>
       </router-link>
       <b-button @click="triggerDelete" variant="primary">Delete</b-button>
     </div>
     <div v-else>
-      <b-button @click="addToCheckout" variant="primary">Add to Cart</b-button>
+      <b-button :disabled="stock < 1" @click="addToCheckout" variant="primary">Add to Cart</b-button>
     </div>
   </b-card>
 </template>
@@ -27,7 +30,7 @@
 const toastifyHelper = require('../helpers/toastify')
 
 export default {
-  props: ["description", "price", "image", "name", "_id"],
+  props: ["description", "price", "image", "name", "stock", "_id"],
   methods: {
     addToCheckout() {
       toastifyHelper("Added to cart")
