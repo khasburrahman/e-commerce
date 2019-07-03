@@ -106,7 +106,7 @@ export default new Vuex.Store({
       } catch (err) {
         toastifyHelper('Login Failed!')
         errorHandler(err)
-        return err
+        return false
       }
     },
     async register (context, payload) {
@@ -117,7 +117,7 @@ export default new Vuex.Store({
         return res
       } catch (err) {
         errorHandler(err)
-        return err
+        return false
       }
     },
     async fetchProduct(context) {
