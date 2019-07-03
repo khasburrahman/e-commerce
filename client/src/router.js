@@ -20,11 +20,11 @@ const adminRoute = (to, from, next) => {
 
 const customerRoute = (to, from, next) => {
   store.dispatch('initApp')
-  if (store.state.loggedUser.isAdmin === false) {
+  if (localStorage.getItem('token') && store.state.loggedUser.isAdmin === false) {
     next()
   } else {
     notAuthorized()
-    next(false)
+    next('/login')
   }
 }
 

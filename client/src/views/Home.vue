@@ -30,7 +30,9 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchProduct')
-    this.$store.dispatch('fetchCart')
+    if (localStorage.getItem('token')) {
+      this.$store.dispatch('fetchCart')
+    }
   },
   components: {
     ProductCart

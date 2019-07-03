@@ -11,7 +11,7 @@
     <b-card-text>
       {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(price) }}<br/>
       {{ `Stock: ${stock}` }}<br v-if="carts.some(e => e.product === _id)" />
-      {{ (carts.some(e => e.product === _id)) ? 'In Cart' : 'xxxxxxxxxxxx' }}
+      {{ (carts.some(e => e.product === _id)) ? 'In Cart' : '' }}
     </b-card-text>
     <b-card-text>{{ description }}</b-card-text>
 
@@ -22,7 +22,7 @@
       <b-button @click="triggerDelete" variant="primary">Delete</b-button>
     </div>
     <div v-else>
-      <b-button :disabled="stock < 1 || carts.some(e => e.product === _id)" @click="addToCheckout" variant="primary">Add to Cart</b-button>
+      <b-button v-if="$store.state.loggedUser.user !== ''" :disabled="stock < 1 || carts.some(e => e.product === _id)" @click="addToCheckout" variant="primary">Add to Cart</b-button>
     </div>
   </b-card>
 </template>
