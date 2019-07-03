@@ -16,7 +16,11 @@ class Controller {
     let user = req.user
     let { product, qty } = req.body
     try {
-      let cart = await Cart.create({ user, product, qty })
+      let cart = await Cart.findOne({ user, product })
+      if (cart) {
+        return next({code: 400, msg: `can't add the same cart twice`})
+      }
+      cart = await Cart.create({ user, product, qty })
       res.status(201).json(cart)
     } catch (err) {
       console.log('err creating cart', err)

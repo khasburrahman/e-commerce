@@ -31,11 +31,23 @@ describe('POST /cart', function () {
     chai.expect(product.stock).to.eq(2)
   })
 
+  it('cant add cart with (product and user) is not unique', async function () {
+    return req
+      .post('/cart')
+      .set('token', token)
+      .send({ product: products[0], qty: 1 })
+      .expect(400)
+      .then(async res => {
+        let body = res.text
+        chai.expect(body).to.match(/can't add the same cart/i)
+      })
+  })
+
   it('stock product tidak mencukupi', async function () {
     return req
       .post('/cart')
       .set('token', token)
-      .send({ product: products[0], qty: 6 })
+      .send({ product: products[1], qty: 6 })
       .expect(400)
       .then(async res => {
         let err = res.text
