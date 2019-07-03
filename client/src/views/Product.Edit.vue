@@ -34,7 +34,7 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group label="Image:" label-for="input-5">
-          <input id="input-5" type="file" @change="handleImageChange" required placeholder="File" />
+          <input id="input-5" type="file" @change="handleImageChange" placeholder="File" />
         </b-form-group>
 
         <b-button type="submit" variant="primary" class="mr-2">
@@ -90,7 +90,23 @@ export default {
       if (!files.length) return;
       this.form.image = files[0];
     },
-    onSubmit() {}
+    async onSubmit(e) {
+      e.preventDefault()
+      this.submitted = true
+      let formData = new FormData()
+      if (this.form.name) formData.append('name', this.form.name)
+      if (this.form.price) formData.append('price', this.form.price)
+      if (this.form.image) formData.append('image', this.form.image)
+      if (this.form.stock) formData.append('stock', this.form.stock)
+      if (this.form.description) formData.append('description', this.form.description)
+
+      let success = await this.$store.dispatch('updateProduct', {formData, id: this.$route.params.id})
+      if (success) {
+        this.$router.push({path: '/'})
+      } else {
+        this.submitted = false
+      }
+    }
   }
 };
 </script>

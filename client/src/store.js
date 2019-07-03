@@ -140,6 +140,16 @@ export default new Vuex.Store({
         return false
       }
     },
+    async updateProduct(context, payload) {
+      let {formData, id} = payload
+      try {
+        let res = await axios.patch(`${BASE_URL}/product/${id}`, formData, axiosConfig({multiPart: true}))
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    },
     async deleteProduct(context, payload) {
       try {
         context.commit('DELETE_LOCAL_PRODUCT', payload)
