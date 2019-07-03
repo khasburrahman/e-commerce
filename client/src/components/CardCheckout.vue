@@ -9,13 +9,16 @@
         <br />
         {{ product.description }}
         <br />
+        Sisa stock: {{ product.stock }}
+        <br />
       </p>
     </div>
     <div class="d-flex flex-column justify-content-center">
       <form>
-        <select name id="input" class="form-control" v-model="qty">
+        <select @change="update" name id="input" class="form-control" v-model="qty">
           <option v-for="n in generateArray1toN(5)" :key="`${n}-input-select`" :value="n">{{n}}</option>
         </select>
+        <b-button @click="triggerDelete" variant="danger">Delete</b-button>
       </form>
     </div>
   </div>
@@ -25,7 +28,7 @@
 import { mapState } from "vuex";
 import CardCheckout from "@/components/CardCheckout.vue";
 export default {
-  props: ["productId", 'initialQty'],
+  props: ["productId", 'initialQty', 'id'],
   data() {
     return {
       qty: this.initialQty
@@ -40,6 +43,32 @@ export default {
   methods: {
     generateArray1toN(n) {
       return [...Array(n).keys()].map(x => x + 1)
+    },
+    async update (e) {
+      let qty = e.target.value
+      let id = this.id
+      let res = await this.$store.dispatch('updateCart', { id, qty })
+      this.$store.dispatch('fetchProduct')
+      this.$store.dispatch('fetchCart')
+    },
+    triggerDelete() {
+      this.$modal.show("dialog", {
+        title: "Are you sure?",
+        text: `Delete product <b>${this.name}</b>?`,
+        buttons: [
+          {
+            title: "Yes",
+            handler: async () => {
+              this.$modal.hide('dialog')
+              // await this.$store.dispatch('deleteProduct', {id: this._id})
+              // await this.$store.dispatch('fetchProduct')
+            }
+          },
+          {
+            title: "No"
+          }
+        ]
+      })
     }
   }
 };

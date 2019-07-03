@@ -18,7 +18,7 @@ const ModelSchema = Schema({
   },
   stock: {
     type: Number,
-    min: 1,
+    min: 0,
     required: true,
   },
   description: {

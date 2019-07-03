@@ -188,6 +188,28 @@ export default new Vuex.Store({
         errorHandler(err)
         return false
       }
+    },
+    async updateCart (context, payload) {
+      let { id, qty } = payload
+      try {
+        let res = await axios.patch(`${BASE_URL}/cart/${id}`, { qty }, axiosConfig())
+        toastifyHelper('cart updated')
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
+    },
+    async deleteCart (context, payload) {
+      let { id } = payload
+      try {
+        let res = await axios.delete(`${BASE_URL}/cart`, axiosConfig())
+        toastifyHelper('cart deleted')
+        return res
+      } catch (err) {
+        errorHandler(err)
+        return false
+      }
     }
   }
 })

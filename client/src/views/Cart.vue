@@ -5,12 +5,12 @@
         <Cart 
           v-for="cart in carts" 
           :key="cart._id" 
+          :id="cart._id"
           :productId="cart.product"
           :initialQty="cart.qty" />
       </b-col>
       <b-col sm="12" md="4">
-        <p>Judul</p>
-        <p>Harga</p>
+        <p class="mt-5">Total: {{  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(total) }}</p>
         <p>Checkout</p>
       </b-col>
     </b-row>
@@ -34,7 +34,13 @@ export default {
   },
   computed: {
     ...mapState(["products", "carts"]),
-
+    total() {
+      let { carts, products } = this
+      return carts.reduce((acc, c) => {
+        let product = products.find(p => p._id === c.product)
+        return acc + (product.price * c.qty)
+      }, 0)
+    }
   },
   components: {
     Cart
