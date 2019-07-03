@@ -15,7 +15,7 @@
             </router-link>
           </div>
           <div v-else-if="$store.state.loggedUser.user !== ''" class="mr-3">
-            <router-link to="/cart">
+            <router-link to="/user/cart">
               <b-button variant="light">Cart ({{ carts.length }})</b-button>
             </router-link>
           </div>

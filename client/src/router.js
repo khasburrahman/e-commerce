@@ -47,7 +47,7 @@ export default new Router({
     {
       path: '/register',
       name: 'register',
-      component: () => import(/* webpackChunkName: "about" */ './views/Register.vue')
+      component: () => import(/* webpackChunkName: "register" */ './views/Register.vue')
     },
     {
       path: '/product',
@@ -62,10 +62,22 @@ export default new Router({
       beforeEnter: adminRoute
     },
     {
-      path: '/cart',
-      name: 'cart',
-      component: () => import(/* webpackChunkName: "checkout" */ './views/Cart.vue'),
-      beforeEnter: customerRoute
+      path: '/user',
+      name: 'user',
+      beforeEnter: customerRoute,
+      component: () => import(/* webpackChunkName: "user"*/ './views/User.vue'),
+      children: [
+        {
+          path: 'detail',
+          name: 'userDetail',
+          component: () => import(/* webpackChunkName: "userDetail" */ './views/UserDetail.vue')
+        },
+        {
+          path: 'cart',
+          name: 'userCart',
+          component: () => import(/* webpackChunkName: "cart" */ './views/Cart.vue'),
+        }
+      ]
     }
   ]
 })
